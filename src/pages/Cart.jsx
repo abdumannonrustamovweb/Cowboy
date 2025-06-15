@@ -8,161 +8,104 @@ const Cart = () => {
   const state = useSelector((state) => state.handleCart);
   const dispatch = useDispatch();
 
-  const EmptyCart = () => {
-    return (
-      <div className="container">
-        <div className="row">
-          <div className="col-md-12 py-5 bg-light text-center">
-            <p className="p-3 text-[15px] display-5">Siz hali bizdan maxsulot sotib olmadingiz ):</p>
-            <Link to="/" className="btn  btn-outline-dark mx-4">
-              <i className="fa fa-arrow-left"></i> Maxsulot sotib olish
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  const addItem = (product) => dispatch(addCart(product));
+  const removeItem = (product) => dispatch(delCart(product));
 
-  const addItem = (product) => {
-    dispatch(addCart(product));
-  };
-  const removeItem = (product) => {
-    dispatch(delCart(product));
-  };
+  const EmptyCart = () => (
+    <div className="text-center py-20">
+      <p className="text-xl text-gray-600 mb-6">Siz hali hech qanday mahsulot tanlamagansiz 😕</p>
+      <Link to="/" className="inline-flex items-center px-6 py-2 border border-gray-800 rounded hover:bg-gray-800 hover:text-white transition">
+        <i className="fa fa-arrow-left mr-2"></i> Maxsulotlar sahifasiga o'tish
+      </Link>
+    </div>
+  );
 
   const ShowCart = () => {
     let subtotal = 0;
-    let shipping = 30.0;
     let totalItems = 0;
-    state.map((item) => {
-      return (subtotal += item.price * item.qty);
+    const shipping = 30;
+
+    state.forEach((item) => {
+      subtotal += item.price * item.qty;
+      totalItems += item.qty;
     });
 
-    state.map((item) => {
-      return (totalItems += item.qty);
-    });
     return (
-      <>
-        <section className="h-100 gradient-custom">
-          <div className="container py-5">
-            <div className="row d-flex justify-content-center my-4">
-              <div className="col-md-8">
-                <div className="card mb-4">
-                  <div className="card-header py-3">
-                    <h5 className="mb-0">Item List</h5>
+      <section className="py-12 bg-gray-50 min-h-[80vh]">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            {/* Cart Items */}
+            <div className="lg:col-span-2 space-y-6">
+              <h2 className="text-2xl font-bold text-gray-800">Savatdagi mahsulotlar</h2>
+              {state.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex flex-col md:flex-row items-center justify-between bg-white p-5 rounded-xl shadow hover:shadow-md transition"
+                >
+                  <div className="flex items-center space-x-5 w-full md:w-auto">
+                    <img src={item.image} alt={item.title} className="w-24 h-24 object-contain rounded-lg" />
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
+                      <p className="text-sm text-gray-500">
+                        {item.qty} × ${item.price.toLocaleString()}
+                      </p>
+                    </div>
                   </div>
-                  <div className="card-body">
-                    {state.map((item) => {
-                      return (
-                        <div key={item.id}>
-                          <div className="row d-flex align-items-center">
-                            <div className="col-lg-3 col-md-12">
-                              <div
-                                className="bg-image rounded"
-                                data-mdb-ripple-color="light"
-                              >
-                                <img
-                                  src={item.image}
-                                  // className="w-100"
-                                  alt={item.title}
-                                  width={100}
-                                  height={75}
-                                />
-                              </div>
-                            </div>
-
-                            <div className="col-lg-5 col-md-6">
-                              <p>
-                                <strong>{item.title}</strong>
-                              </p>
-                              {/* <p>Color: blue</p>
-                              <p>Size: M</p> */}
-                            </div>
-
-                            <div className="col-lg-4 col-md-6">
-                              <div
-                                className="d-flex mb-4"
-                                style={{ maxWidth: "300px" }}
-                              >
-                                <button
-                                  className="btn px-3"
-                                  onClick={() => {
-                                    removeItem(item);
-                                  }}
-                                >
-                                  <i className="fas fa-minus"></i>
-                                </button>
-
-                                <p className="mx-5">{item.qty}</p>
-
-                                <button
-                                  className="btn px-3"
-                                  onClick={() => {
-                                    addItem(item);
-                                  }}
-                                >
-                                  <i className="fas fa-plus"></i>
-                                </button>
-                              </div>
-
-                              <p className="text-start text-md-center">
-                                <strong>
-                                  <span className="text-muted">{item.qty}</span>{" "}
-                                  x ${item.price}
-                                </strong>
-                              </p>
-                            </div>
-                          </div>
-
-                          <hr className="my-4" />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="card mb-4">
-                  <div className="card-header py-3 bg-light">
-                    <h5 className="mb-0">Order Summary</h5>
-                  </div>
-                  <div className="card-body">
-                    <ul className="list-group list-group-flush">
-                      <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                        Jami Narx ({totalItems})<span>${Math.round(subtotal)}</span>
-                      </li>
-                      <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-                        <div>
-                          <strong>Total amount</strong>
-                        </div>
-                        <span>
-                          <strong>${Math.round(subtotal + shipping)}</strong>
-                        </span>
-                      </li>
-                    </ul>
-
-                    <Link
-                      to="/checkout"
-                      className="btn btn-dark btn-lg btn-block"
+                  <div className="flex items-center space-x-3 mt-4 md:mt-0">
+                    <button
+                      onClick={() => removeItem(item)}
+                      className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                      disabled={item.qty === 1}
                     >
-                      Zakaz berish
-                    </Link>
+                      <i className="fas fa-minus"></i>
+                    </button>
+                    <span className="px-3 text-lg">{item.qty}</span>
+                    <button
+                      onClick={() => addItem(item)}
+                      className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                    >
+                      <i className="fas fa-plus"></i>
+                    </button>
                   </div>
                 </div>
-              </div>
+              ))}
+            </div>
+
+            {/* Order Summary */}
+            <div className="bg-white p-6 rounded-xl shadow-lg h-fit sticky top-20">
+              <h2 className="text-xl font-bold mb-4 border-b pb-2">Buyurtma Tafsilotlari</h2>
+              <ul className="space-y-4 text-gray-700 text-sm">
+                <li className="flex justify-between">
+                  <span>Maxsulotlar ({totalItems} dona):</span>
+                  <span>${subtotal.toLocaleString()}</span>
+                </li>
+                <li className="flex justify-between">
+                  <span>Yetkazib berish:</span>
+                  <span>${shipping}</span>
+                </li>
+                <li className="flex justify-between font-bold border-t pt-3 text-base">
+                  <span>Umumiy:</span>
+                  <span>${(subtotal + shipping).toLocaleString()}</span>
+                </li>
+              </ul>
+              <Link
+                to="/checkout"
+                className="mt-6 block w-full text-center py-2 bg-black text-white rounded hover:bg-gray-800 transition"
+              >
+                Zakazni rasmiylashtirish
+              </Link>
             </div>
           </div>
-        </section>
-      </>
+        </div>
+      </section>
     );
   };
 
   return (
     <>
       <Navbar />
-      <div className="container my-3 py-3">
-        <h1 className="text-center">Tanlangan maxsulotlar</h1>
-        <hr />
+      <div className="container mx-auto px-4 py-6">
+        <h1 className="text-3xl font-bold text-center mb-8">Savat</h1>
         {state.length > 0 ? <ShowCart /> : <EmptyCart />}
       </div>
       <Footer />

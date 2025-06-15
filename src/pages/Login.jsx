@@ -22,7 +22,7 @@ const AdminPanel = () => {
   });
 
   
-  const API_BASE_URL = "http://192.168.35.164:3000/products/create";
+  const API_BASE_URL = "http://34.236.143.41/";
 
   const handleChange = (e) => {
     if (e.target.name === "image") {

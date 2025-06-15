@@ -1,5 +1,5 @@
 
-const BASE_URL = 'http://34.236.143.41'
+const BASE_URL = 'https://cowboy-uz.duckdns.org'
 
 
 export const fetchAllProducts = async () => {
