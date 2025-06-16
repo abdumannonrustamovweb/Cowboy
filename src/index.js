@@ -25,10 +25,10 @@ import "./i18n";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <StrictMode >
+  <StrictMode>
     <BrowserRouter>
-      <ScrollToTop>
-        <Provider store={store}>
+      <Provider store={store}>
+        <ScrollToTop>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/product" element={<Products />} />
@@ -42,9 +42,9 @@ root.render(
             <Route path="*" element={<PageNotFound />} />
             <Route path="/product/*" element={<PageNotFound />} />
           </Routes>
-        </Provider>
-      </ScrollToTop>
-      <Toaster />
+          <Toaster position="top-right" />
+        </ScrollToTop>
+      </Provider>
     </BrowserRouter>
   </StrictMode>
 );

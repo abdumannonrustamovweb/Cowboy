@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { BASE_URL } from "../api/productApi";
 
 const AdminPanel = () => {
   const navigate = useNavigate();
@@ -21,9 +22,6 @@ const AdminPanel = () => {
     image: null,
   });
 
-  
-  const API_BASE_URL = "http://34.236.143.41/";
-
   const handleChange = (e) => {
     if (e.target.name === "image") {
       setFormData({ ...formData, image: e.target.files[0] });
@@ -32,14 +30,14 @@ const AdminPanel = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
-
+ 
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`${API_BASE_URL}/products`);
+      const response = await axios.get(`${BASE_URL}/products`);
       setProducts(response.data);
       console.log(response);
-      
+
       setLoading(false);
     } catch (err) {
       setError("Mahsulotlarni yuklashda xatolik yuz berdi");
@@ -79,15 +77,14 @@ const AdminPanel = () => {
       setLoading(true);
 
       const formDataToSend = new FormData();
-      formDataToSend.append("title", formData.name);
+      formDataToSend.append("name", formData.name);
       formDataToSend.append("price", formData.price);
       formDataToSend.append("description", formData.description);
-      if (formData.image) {
-        formDataToSend.append("image", formData.image);
-      }
+      formDataToSend.append("image", formData.image);
+      console.log(formData.image);
 
       const response = await axios.post(
-        `${API_BASE_URL}/products/create`,
+        `${BASE_URL}/products/create`,
         formDataToSend,
         {
           headers: {
@@ -99,13 +96,13 @@ const AdminPanel = () => {
       setProducts([...products, response.data]);
       setFormData({ name: "", price: "", description: "", image: null });
       setActiveTab("products");
-      setLoading(false)
+      setLoading(false);
       setShowSuccess(true);
       setTimeout(() => setShowSuccess(false), 3000);
     } catch (err) {
       setError("Mahsulot qo'shishda xatolik yuz berdi");
       console.error(err);
-      setLoading(false)
+      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -114,7 +111,7 @@ const AdminPanel = () => {
   const handleDelete = async (id) => {
     if (window.confirm("Haqiqatan ham ushbu mahsulotni o'chirmoqchimisiz?")) {
       try {
-        await axios.delete(`${API_BASE_URL}/products/${id}`);
+        await axios.delete(`${BASE_URL}/products/${id}`);
         setProducts(products.filter((p) => p.id !== id));
       } catch (err) {
         setError("Mahsulotni o'chirishda xatolik yuz berdi");
@@ -130,25 +127,22 @@ const AdminPanel = () => {
 
     if (newTitle && newPrice && newDesc) {
       try {
-        const response = await axios.put(
-          `${API_BASE_URL}/products/${product.id}`,
-          {
-            name: newTitle,
-            price: newPrice,
-            description: newDesc,
-          }
-        );
+        const response = await axios.put(`${BASE_URL}/products/${product.id}`, {
+          name: newTitle,
+          price: newPrice,
+          description: newDesc,
+        });
 
         setProducts(
           products.map((p) => (p.id === product.id ? response.data : p))
         );
       } catch (err) {
-        setError("Mahsulotni tahrirlashda xatolik yuz berdi");
-        console.error(err);
+        console.error("Error details:", err.response?.data || err.message);
+        setError("Mahsulot qo'shishda xatolik yuz berdi");
+        setLoading(false);
       }
     }
   };
-
 
   if (!isAuthenticated) {
     return (
@@ -227,7 +221,7 @@ const AdminPanel = () => {
                 <div className="col-md-6">
                   <label className="form-label">Mahsulot nomi</label>
                   <input
-                    name="title"
+                    name="name"
                     defaultValue={formData.name}
                     onChange={handleChange}
                     className="form-control"
@@ -305,7 +299,7 @@ const AdminPanel = () => {
               <div key={product.id} className="col-md-4 mb-4">
                 <div className="card h-100 shadow">
                   <img
-                    src={`${API_BASE_URL}/${product.image}`}
+                    src={`${BASE_URL}/${product.image}`}
                     className="card-img-top p-3"
                     height="250"
                     style={{ objectFit: "contain" }}
