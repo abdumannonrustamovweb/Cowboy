@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { fetchAllProducts } from "../api/productApi";
 
-
 const useProductStore = create((set, get) => ({
   products: [],
   loading: false,

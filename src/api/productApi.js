@@ -7,7 +7,7 @@ export const fetchAllProducts = async () => {
 
   const data = [];
 
-  for (let index = 0; index < 5; index++) {
+  for (let index = 0; index < 1; index++) {
     for (let i = 0; i < jsonData.length; i++) {
       data.push(jsonData[i]);
     }

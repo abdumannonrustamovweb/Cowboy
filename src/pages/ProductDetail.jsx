@@ -75,7 +75,7 @@ const ProductDetail = () => {
             </div>
             <div className="col-md-6 col-md-6 py-5">
               <h1 className="display-5">{product.name}</h1>
-              <h3 className="display-6  my-4">${product.price}</h3>
+              <h3 className="display-6  my-4">{product.price} $</h3>
               <p className="lead">{product.description}</p>
               <button
                 className="btn btn-outline-dark"
@@ -93,75 +93,6 @@ const ProductDetail = () => {
     );
   };
 
-  // const Loading2 = () => {
-  //   return (
-  //     <>
-  //       <div className="my-4 py-4">
-  //         <div className="d-flex">
-  //           <div className="mx-4">
-  //             <Skeleton height={400} width={250} />
-  //           </div>
-  //           <div className="mx-4">
-  //             <Skeleton height={400} width={250} />
-  //           </div>
-  //           <div className="mx-4">
-  //             <Skeleton height={400} width={250} />
-  //           </div>
-  //           <div className="mx-4">
-  //             <Skeleton height={400} width={250} />
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </>
-  //   );
-  // };
-
-  // const ShowSimilarProduct = () => {
-  //   return (
-  //     <>
-  //       <div className="py-4 my-4">
-  //         <div className="d-flex">
-  //           {similarProducts.map((item) => {
-  //             return (
-  //               <div key={item.id} className="card mx-4 text-center">
-  //                 <img
-  //                   className="card-img-top p-3"
-  //                   src={item.image}
-  //                   alt="Card"
-  //                   height={300}
-  //                   width={300}
-  //                 />
-  //                 <div className="card-body">
-  //                   <h5 className="card-title">
-  //                     {item.title.substring(0, 15)}...
-  //                   </h5>
-  //                 </div>
-  //                 <ul className="list-group list-group-flush">
-  //                   <li className="list-group-item lead">${product.price}</li>
-  //                 </ul>
-  //                 <div className="card-body">
-  //                   <Link
-  //                     to={"/product/" + item.id}
-  //                     className="btn btn-dark m-1"
-  //                   >
-  //                     Buy Now
-  //                   </Link>
-  //                   <button
-  //                     className="btn btn-dark m-1"
-  //                     onClick={() => addProduct(item)}
-  //                   >
-  //                     Add to Cart
-  //                   </button>
-  //                 </div>
-  //               </div>
-  //             );
-  //           })}
-  //         </div>
-  //       </div>
-  //     </>
-  //   );
-  // };
-  
   return (
     <>
       <Navbar />
@@ -169,7 +100,6 @@ const ProductDetail = () => {
         <div className="row">{loading ? <Loading /> : <ShowProduct />}</div>
         <div className="row my-5 py-5">
           <div className="d-none d-md-block">
-          <h2 className="">You may also Like</h2>
             {/* <Marquee
               pauseOnHover={true}
               pauseOnClick={true}
