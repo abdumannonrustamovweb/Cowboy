@@ -120,29 +120,7 @@ const AdminPanel = () => {
     }
   };
 
-  const handleEdit = async (product) => {
-    const newTitle = prompt("Mahsulot nomi:", product.name);
-    const newPrice = prompt("Mahsulot narxi:", product.price);
-    const newDesc = prompt("Mahsulot tavsifi:", product.description);
 
-    if (newTitle && newPrice && newDesc) {
-      try {
-        const response = await axios.put(`${BASE_URL}/products/${product.id}`, {
-          name: newTitle,
-          price: newPrice,
-          description: newDesc,
-        });
-
-        setProducts(
-          products.map((p) => (p.id === product.id ? response.data : p))
-        );
-      } catch (err) {
-        console.error("Error details:", err.response?.data || err.message);
-        setError("Mahsulot qo'shishda xatolik yuz berdi");
-        setLoading(false);
-      }
-    }
-  };
 
   if (!isAuthenticated) {
     return (
@@ -316,13 +294,6 @@ const AdminPanel = () => {
                   </div>
                   <div className="card-footer bg-white">
                     <div className="d-flex justify-content-between">
-                      <button
-                        onClick={() => handleEdit(product)}
-                        className="btn btn-outline-warning"
-                        disabled={loading}
-                      >
-                        Tahrirlash
-                      </button>
                       <button
                         onClick={() => handleDelete(product.id)}
                         className="btn btn-outline-danger"

@@ -12,10 +12,10 @@ const Cart = () => {
   const removeItem = (product) => dispatch(delCart(product));
 
   const EmptyCart = () => (
-    <div className="text-center py-20">
-      <p className="text-xl text-gray-600 mb-6">Siz hali hech qanday mahsulot tanlamagansiz 😕</p>
-      <Link to="/" className="inline-flex items-center px-6 py-2 border border-gray-800 rounded hover:bg-gray-800 hover:text-white transition">
-        <i className="fa fa-arrow-left mr-2"></i> Maxsulotlar sahifasiga o'tish
+    <div className="container py-5 text-center">
+      <p className="fs-4 text-muted mb-4">Siz hali hech qanday mahsulot tanlamagansiz 😕</p>
+      <Link to="/" className="btn btn-outline-dark">
+        <i className="fa fa-arrow-left me-2"></i> Maxsulotlar sahifasiga o'tish
       </Link>
     </div>
   );
@@ -31,81 +31,92 @@ const Cart = () => {
     });
 
     return (
-      <section className="py-12 bg-gray-50 min-h-[80vh]">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            {/* Cart Items */}
-            <div className="lg:col-span-2 space-y-6">
-              <h2 className="text-2xl font-bold text-gray-800">Savatdagi mahsulotlar</h2>
-              {state.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex flex-col md:flex-row items-center justify-between bg-white p-5 rounded-xl shadow hover:shadow-md transition"
-                >
-                  <div className="flex items-center space-x-5 w-full md:w-auto">
-                    <img src={item.image} alt={item.title} className="w-24 h-24 object-contain rounded-lg" />
+      <div className="container py-5">
+        <div className="row g-4">
+          {/* Cart Items */}
+          <div className="col-lg-8">
+            <h2 className="mb-4">Savatdagi mahsulotlar</h2>
+            {state.map((item) => (
+              <div key={item.id} className="card mb-3 shadow-sm">
+                <div className="row g-0">
+                  <div className="col-md-4 text-center d-flex align-items-center">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="img-fluid p-3"
+                      style={{ height: "150px", objectFit: "contain" }}
+                    />
+                  </div>
+                  <div className="col-md-8 d-flex flex-column justify-content-between p-3">
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
-                      <p className="text-sm text-gray-500">
+                      <h5 className="card-title">{item.title}</h5>
+                      <p className="card-text text-muted">
                         {item.qty} × ${item.price.toLocaleString()}
                       </p>
                     </div>
-                  </div>
-                  <div className="flex items-center space-x-3 mt-4 md:mt-0">
-                    <button
-                      onClick={() => removeItem(item)}
-                      className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-                      disabled={item.qty === 1}
-                    >
-                      <i className="fas fa-minus"></i>
-                    </button>
-                    <span className="px-3 text-lg">{item.qty}</span>
-                    <button
-                      onClick={() => addItem(item)}
-                      className="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-                    >
-                      <i className="fas fa-plus"></i>
-                    </button>
+                    {/* Tugmalar o‘ng pastki burchakda */}
+                    <div className="d-flex justify-content-end mt-auto">
+                      <div className="btn-group">
+                        <button
+                          onClick={() => removeItem(item)}
+                          className="btn btn-outline-secondary"
+                          disabled={item.qty === 1}
+                        >
+                          <i className="fas fa-minus"></i>
+                        </button>
+                        <span className="btn btn-light">{item.qty}</span>
+                        <button
+                          onClick={() => addItem(item)}
+                          className="btn btn-outline-secondary"
+                        >
+                          <i className="fas fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
 
-            {/* Order Summary */}
-            <div className="bg-white p-6 rounded-xl shadow-lg h-fit sticky top-20">
-              <h2 className="text-xl font-bold mb-4 border-b pb-2">Buyurtma Tafsilotlari</h2>
-              <ul className="space-y-4 text-gray-700 text-sm">
-                <li className="flex justify-between">
-                  <span>Maxsulotlar ({totalItems} dona):</span>
-                  <span>${subtotal.toLocaleString()}</span>
-                </li>
-                <li className="flex justify-between">
-                  <span>Yetkazib berish:</span>
-                  <span>${shipping}</span>
-                </li>
-                <li className="flex justify-between font-bold border-t pt-3 text-base">
-                  <span>Umumiy:</span>
-                  <span>${(subtotal + shipping).toLocaleString()}</span>
-                </li>
-              </ul>
-              <Link
-                to="/checkout"
-                className="mt-6 block w-full text-center py-2 bg-black text-white rounded hover:bg-gray-800 transition"
-              >
-                Zakazni rasmiylashtirish
-              </Link>
+          {/* Order Summary */}
+          <div className="col-lg-4">
+            <div className="card shadow">
+              <div className="card-body">
+                <h5 className="card-title mb-3">Buyurtma Tafsilotlari</h5>
+                <ul className="list-group list-group-flush mb-3">
+                  <li className="list-group-item d-flex justify-content-between">
+                    <span>Maxsulotlar ({totalItems} dona):</span>
+                    <strong>${subtotal.toLocaleString()}</strong>
+                  </li>
+                  <li className="list-group-item d-flex justify-content-between">
+                    <span>Yetkazib berish:</span>
+                    <strong>${shipping}</strong>
+                  </li>
+                  <li className="list-group-item d-flex justify-content-between fw-bold border-top pt-2">
+                    <span>Umumiy:</span>
+                    <span>${(subtotal + shipping).toLocaleString()}</span>
+                  </li>
+                </ul>
+                <Link
+                  to="/checkout"
+                  className="btn btn-dark w-100"
+                >
+                  Zakazni rasmiylashtirish
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     );
   };
 
   return (
     <>
       <Navbar />
-      <div className="container mx-auto px-4 py-6">
-        <h1 className="text-3xl font-bold text-center mb-8">Savat</h1>
+      <div className="container py-5">
+        <h1 className="text-center mb-4">Savat</h1>
         {state.length > 0 ? <ShowCart /> : <EmptyCart />}
       </div>
       <Footer />
