@@ -22,16 +22,21 @@ export default function ProductCard({ product }) {
       className="col-md-4 col-sm-6 col-xs-8 col-12 mb-4"
     >
       <div className="card text-center h-100">
-        <img
-          className="card-img-top p-2 mx-auto object-contain"
-          src={getImageUrl(product.image)}
-          alt="Card"
-          style={{
-            width: "100%",
-            height: "600px",
-            objectFit: "contain",
-          }}
-        />
+        <div
+          className="card d-flex justify-content-center align-items-center"
+          style={{ height: "380px", overflow: "hidden" }}
+        >
+          <img
+            className="img-fluid p-2"
+            src={getImageUrl(product.image)}
+            alt="Card"
+            style={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+              objectFit: "contain",
+            }}
+          />
+        </div>
 
         <div className="card-body">
           <h5 className="card-title">
