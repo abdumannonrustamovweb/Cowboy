@@ -1,22 +1,13 @@
 export const BASE_URL = 'https://cowboy-uz.duckdns.org';
 
-// Mahsulotlarni olish
+// Barcha mahsulotlarni olish
 export const fetchAllProducts = async () => {
   const response = await fetch(`${BASE_URL}/products`);
   const jsonData = await response.json();
-
-  const data = [];
-
-  for (let index = 0; index < 1; index++) {
-    for (let i = 0; i < jsonData.length; i++) {
-      data.push(jsonData[i]);
-    }
-  }
-
-  return data;
+  return jsonData; // Takroriy push yo'q
 };
 
-// ID bo‘yicha mahsulotni olish
+// ID bo‘yicha mahsulot olish
 export const fetchProductById = async (id) => {
   try {
     const response = await fetch(`${BASE_URL}/products/${id}`);
@@ -30,10 +21,10 @@ export const fetchProductById = async (id) => {
   }
 };
 
-// Rasm URL ni olish
+// Rasmni to‘liq URLga aylantirish
 export const getImageUrl = (name) => `${BASE_URL}/uploads/${name}`;
 
-
+// Yangi mahsulot yaratish
 export const createProduct = async (formData) => {
   try {
     const response = await fetch(`${BASE_URL}/products/create`, {
@@ -50,4 +41,3 @@ export const createProduct = async (formData) => {
     throw error;
   }
 };
-
