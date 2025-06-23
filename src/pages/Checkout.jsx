@@ -25,7 +25,6 @@ const Checkout = () => {
 
   const ShowCheckout = () => {
     let subtotal = 0;
-    let shipping = 30.0;
     let totalItems = 0;
 
     state.forEach((item) => {
@@ -66,7 +65,7 @@ const Checkout = () => {
 📞 Tel: ${phone}
 📍 Hudud: ${region}
 
-💰 Umumiy: $${Math.round(subtotal + shipping)}
+💰 Umumiy: $${Math.round(subtotal)}
 `;
 
       await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
@@ -97,13 +96,9 @@ const Checkout = () => {
                     Mahsulotlar ({totalItems})
                     <span>${Math.round(subtotal)}</span>
                   </li>
-                  <li className="list-group-item d-flex justify-content-between">
-                    Yetkazib berish
-                    <span>${shipping}</span>
-                  </li>
                   <li className="list-group-item d-flex justify-content-between fw-bold">
                     Umumiy
-                    <span>${Math.round(subtotal + shipping)}</span>
+                    <span>${Math.round(subtotal)}</span>
                   </li>
                 </ul>
               </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { BASE_URL } from "../api/productApi";
+import { BASE_URL, getImageUrl } from "../api/productApi";
 
 const AdminPanel = () => {
   const navigate = useNavigate();
@@ -30,14 +30,12 @@ const AdminPanel = () => {
       setFormData({ ...formData, [name]: value });
     }
   };
- 
+
   const fetchProducts = async () => {
     try {
       setLoading(true);
       const response = await axios.get(`${BASE_URL}/products`);
       setProducts(response.data);
-      console.log(response);
-
       setLoading(false);
     } catch (err) {
       setError("Mahsulotlarni yuklashda xatolik yuz berdi");
@@ -59,6 +57,7 @@ const AdminPanel = () => {
       setIsAuthenticated(true);
       setLogin("");
       setPassword("");
+      localStorage.setItem("isAuthenticated", "true");
       await fetchProducts();
     } else {
       alert("Login yoki parol noto'g'ri!");
@@ -75,13 +74,11 @@ const AdminPanel = () => {
     e.preventDefault();
     try {
       setLoading(true);
-
       const formDataToSend = new FormData();
       formDataToSend.append("name", formData.name);
       formDataToSend.append("price", formData.price);
       formDataToSend.append("description", formData.description);
       formDataToSend.append("image", formData.image);
-      console.log(formData.image);
 
       const response = await axios.post(
         `${BASE_URL}/products/create`,
@@ -103,8 +100,6 @@ const AdminPanel = () => {
       setError("Mahsulot qo'shishda xatolik yuz berdi");
       console.error(err);
       setLoading(false);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -119,8 +114,6 @@ const AdminPanel = () => {
       }
     }
   };
-
-
 
   if (!isAuthenticated) {
     return (
@@ -200,7 +193,7 @@ const AdminPanel = () => {
                   <label className="form-label">Mahsulot nomi</label>
                   <input
                     name="name"
-                    defaultValue={formData.name}
+                    value={formData.name}
                     onChange={handleChange}
                     className="form-control"
                     placeholder="Mahsulot nomi"
@@ -215,7 +208,7 @@ const AdminPanel = () => {
                     className="form-control"
                     onChange={handleChange}
                     placeholder="Narxi"
-                    defaultValue={formData.price}
+                    value={formData.price}
                     required
                   />
                 </div>
@@ -277,11 +270,12 @@ const AdminPanel = () => {
               <div key={product.id} className="col-md-4 mb-4">
                 <div className="card h-100 shadow">
                   <img
-                    src={`${BASE_URL}/${product.image}`}
+                    src={getImageUrl(product.image)}
                     className="card-img-top p-3"
                     height="250"
                     style={{ objectFit: "contain" }}
                     alt={product.name}
+                    onError={(e) => (e.target.src = "/default.jpg")}
                   />
                   <div className="card-body">
                     <h5 className="card-title">{product.name}</h5>
