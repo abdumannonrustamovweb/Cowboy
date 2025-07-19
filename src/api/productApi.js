@@ -1,10 +1,10 @@
-export const BASE_URL = 'https://cowboy-uz.duckdns.org';
+export const BASE_URL = 'https://horsegear.pythonanywhere.com/api';
 
 // Barcha mahsulotlarni olish
 export const fetchAllProducts = async () => {
   const response = await fetch(`${BASE_URL}/products`);
   const jsonData = await response.json();
-  return jsonData; // Takroriy push yo'q
+  return jsonData;
 };
 
 // ID bo‘yicha mahsulot olish
